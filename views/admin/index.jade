@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+		.container
+			.navbar-header
+				strong.navbar-brand NEWS ARCHIVE
+
+	div.main-content.container(ng-app)
+		div(ng-controller='MainCtrl')
+			ul
+				li(ng-repeat='each in data.targetList')
+					| {{each.url}}
+
+					button(ng-click='func.remove(each)', class='btn btn-default')
+						| delete
+
+			form
+				input(type='text', ng-model='data.target.url', class='form-control')
+				input(type='text', ng-model='data.target.inspect', class='form-control')
+				input(type='text', ng-model='data.target.interval', class='form-control')
+				button(ng-click='func.add()', class='btn btn-default').
+					submit
+			pre.
+				{{data | json}}
+		
+

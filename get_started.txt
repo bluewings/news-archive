@@ -1,0 +1,12 @@
+1. express 폴더명
+
+2. cd 폴더명
+
+3. package.json 수정
+	"dependencies" 에 아래 내용 추가
+		"mongodb": "*",
+    	"monk": "*"
+
+4. npm install <- 빌드
+
+5. npm start <- 서버 시작
