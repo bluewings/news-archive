@@ -1,12 +1,32 @@
-1. express 폴더명
+0.	npm install -g express
+	npm install -g express-generator
+	mongodb 설치
 
-2. cd 폴더명
 
-3. package.json 수정
+
+
+
+1.	express 폴더명
+
+2.	cd 폴더명
+
+3.	package.json 수정
 	"dependencies" 에 아래 내용 추가
+		"underscore": "*",
 		"mongodb": "*",
     	"monk": "*"
 
-4. npm install <- 빌드
+4.	npm install <- 빌드
 
-5. npm start <- 서버 시작
+5.	npm start <- 서버 시작
+
+6.	mongod --dbpath c:\node\nodetest1\data
+	news-archive 하위에 \data\db 만들어주자
+
+7.	mongo
+		use news-archive
+
+8.	.gitignore 에 아래 항목들 추가
+	node_modules/
+	data/db/
+	*.scssc	
