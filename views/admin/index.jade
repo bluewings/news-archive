@@ -4,24 +4,86 @@ block content
 	nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
 		.container
 			.navbar-header
-				strong.navbar-brand NEWS ARCHIVE
+				strong.navbar-brand
+					| NEWS ARCHIVE (admin)
 
-	div.main-content.container(ng-app)
+	div.admin-content(ng-app)
 		div(ng-controller='MainCtrl')
-			ul
-				li(ng-repeat='each in data.targetList')
-					| {{each.url}}
+			div.rows.container
+				div.col.col-md-4
+					div.list-group
+						a.list-group-item(ng-repeat='each in data.targetList',
+							ng-click='func.select(each)',
+							ng-class='each._id == data.target._id  ? " active" : ""')
+							| {{each.url}} {{each.name}}
+						div.list-group-item(ng-show='data.targetList.length === 0')
+							| No targets were found.
 
-					button(ng-click='func.remove(each)', class='btn btn-default')
-						| delete
+				div.col.col-md-8
+					form.well
 
-			form
-				input(type='text', ng-model='data.target.url', class='form-control')
-				input(type='text', ng-model='data.target.inspect', class='form-control')
-				input(type='text', ng-model='data.target.interval', class='form-control')
-				button(ng-click='func.add()', class='btn btn-default').
-					submit
-			pre.
-				{{data | json}}
-		
+						div.input-group.input-group-sm
+							span.input-group-addon
+								em
+									| NAME
+							input.form-control(type='text',
+								ng-model='data.target.name',
+								autocorrect='off', autocapitalize='off', spellcheck='false',
+								placeholder='name')
 
+						div.input-group.input-group-sm
+							span.input-group-addon
+								em
+									| URL
+							input.form-control(type='text',
+								ng-model='data.target.url',
+								autocorrect='off', autocapitalize='off', spellcheck='false',
+								placeholder='http://')
+
+						div.input-group.input-group-sm
+							span.input-group-addon
+								em
+									| INSPECT
+							input.form-control(type='text',
+								ng-model='data.target.inspect',
+								autocorrect='off', autocapitalize='off', spellcheck='false',
+								placeholder='css selector')
+
+						div.input-group.input-group-sm
+							span.input-group-addon
+								em
+									| USER AGENT
+							select.form-control
+								option 1
+
+						div.input-group.input-group-sm
+							span.input-group-addon
+								em
+									| VIEWPORT
+							input.form-control(type='text',
+								ng-model='data.target.viewport',
+								autocorrect='off', autocapitalize='off', spellcheck='false',
+								placeholder='768,1024')
+
+						textarea.form-control.input-sm(rows='5',
+							ng-model='data.target.desc',
+							autocorrect='off', autocapitalize='off', spellcheck='false',
+							placeholder='description (optional)')
+
+						button.btn.btn-sm.btn-default(ng-click='func.clear()')
+							| {{data.target._id ? 'UNSELECT' : 'CLEAR'}}
+
+						button.btn.btn-sm.btn-default(ng-click='func.preview()')
+							| PREVIEW
+
+						div.pull-right
+
+							button.btn.btn-sm(ng-click='func.upsert()',
+								ng-class='data.target._id ? "btn-primary" : "btn-success"')
+								| {{data.target._id ? 'MODIFY' : 'ADD'}}
+
+							button.btn.btn-sm.btn-danger(ng-click='func.remove()',
+								ng-show='data.target._id')
+								| DELETE
+
+						div.clearfix

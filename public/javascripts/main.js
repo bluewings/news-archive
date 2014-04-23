@@ -1,46 +1,78 @@
 function MainCtrl($scope, $http) {
 
-	$scope.data = {
-		target: {
+    var SUCCESS = 200;
 
-		},
-		targetList: []
-	};
+    $scope.data = {
+        target: null,
+        targetList: []
+    };
 
-	$scope.func = {
+    $scope.func = {
+        select: function (target) {
 
-		add: function() {
+            $scope.data.target = JSON.parse(JSON.stringify(target));
+        },
+        clear: function () {
 
-			$http.post('/api/target', $scope.data.target).success(function(data) {
+            $scope.data.target = null;
+        },
+        upsert: function () {
 
-				//console.log(data);
-				//$scope.data.targetList = data.result.targetList;
-			});
+            if ($scope.data.target._id) {
+                $scope.func.modify();
+            } else {
+                $scope.func.add();
+            }
+        },
+        add: function () {
 
-		},
-		remove: function(target) {
+            $http.post('/api/target', $scope.data.target).success(function (data) {
 
-			$http.delete('/api/target/' + target._id).success(function(data) {
+                if (data.code == SUCCESS) {
+                    $scope.func.clear();
+                    $scope.func.refresh();
+                } else {
+                    alert(data.message);
+                }
+            });
+        },
+        modify: function () {
 
-				//console.log(data);
-				//$scope.data.targetList = data.result.targetList;
-			});			
+            $http.post('/api/target/' + $scope.data.target._id, $scope.data.target).success(function (data) {
 
-			//console.log(target);
-			//alert(JSON.stringify(target));
+                if (data.code == SUCCESS) {
+                    $scope.func.clear();
+                    $scope.func.refresh();
+                } else {
+                    alert(data.message);
+                }
+            });
+        },
+        remove: function () {
 
-			//db.things.remove({_id: ObjectId("4f6f244f6f35438788aa138f")});
-		}
+            $http.delete('/api/target/' + $scope.data.target._id).success(function (data) {
 
-	};
+                if (data.code == SUCCESS) {
+                    $scope.func.clear();
+                    $scope.func.refresh();
+                } else {
+                    alert(data.message);
+                }
+            });
+        },
+        refresh: function () {
 
+            $http.jsonp('/api/target/?callback=JSON_CALLBACK').success(function (data) {
 
+                if (data.code == SUCCESS) {
+                    $scope.data.targetList = data.result.targetList;
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
 
+    };
 
-	$http.jsonp('/api/target/getList.json?callback=JSON_CALLBACK').success(function(data) {
-
-		console.log(data);
-		$scope.data.targetList = data.result.targetList;
-	});
-	
+    $scope.func.refresh();
 }

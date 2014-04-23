@@ -1,6 +1,30 @@
 html {
   overflow-y: scroll; }
 
+.rows {
+  padding: 0; }
+  .rows .col {
+    padding: 10px; }
+
+.admin-content {
+  margin-top: 45px;
+  font-family: Play; }
+  .admin-content .list-group-item {
+    font-size: 12px; }
+  .admin-content .well {
+    padding: 20px; }
+    .admin-content .well .input-group, .admin-content .well textarea {
+      margin-bottom: 10px; }
+      .admin-content .well .input-group .input-group-addon, .admin-content .well textarea .input-group-addon {
+        background-color: #fff;
+        text-align: left; }
+        .admin-content .well .input-group .input-group-addon em, .admin-content .well textarea .input-group-addon em {
+          display: block;
+          width: 80px;
+          font-style: normal; }
+      .admin-content .well .input-group input[type='text'], .admin-content .well .input-group select, .admin-content .well textarea input[type='text'], .admin-content .well textarea select {
+        border-left: none; }
+
 .navbar {
   font-family: Play;
   min-height: 0; }

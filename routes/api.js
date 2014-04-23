@@ -1,101 +1,46 @@
-var router = require('express').express.Router(),
-	target = require('target'),
-    ObjectID = require('mongodb').ObjectID;
+var router = require('express').Router(),
+    target = require('../models/target');
 
 var COLLECTION = 'target',
     SUCCESS = '200',
     ERROR = '500';
 
+// Create
 router.post('/target', function (req, res) {
 
-    var db = req.db,
-        collection = db.get(COLLECTION),
-        entity;
+    target.add(req.db, req.body, function (result) {
 
-    entity = {
-        url: req.body.url,
-        inspect: req.body.inspect,
-        interval: parseInt(req.body.interval ? req.body.interval : 60, 10)
-    };
-
-    if (!entity.url) {
-        res.jsonp({
-            code: ERROR,
-            message: 'url is required.'
-        });
-    } else if (!entity.inspect) {
-        res.jsonp({
-            code: ERROR,
-            message: 'inspect is required.'
-        });
-    }
-
-    collection.insert(entity, function (err, docs) {
-
-        if (err) {
-            res.jsonp({
-                code: ERROR,
-                message: err
-            });
-        } else {
-            res.jsonp({
-                code: SUCCESS,
-                message: 'ok'
-            });
-        }
-    });
-
-});
-
-router.get('/target/getList.json', function (req, res) {
-
-    var db = req.db,
-        collection = db.get(COLLECTION);
-
-    collection.find({}, {}, function (err, docs) {
-
-        res.jsonp({
-            code: SUCCESS,
-            message: 'ok',
-            result: {
-                targetList: docs
-            }
-        });
+        res.jsonp(result);
     });
 });
 
+// Update
+router.post('/target/:id', function (req, res) {
+
+    target.modify(req.db, req.params.id, req.body, function (result) {
+
+        res.jsonp(result);
+    });
+});
+
+// Read
+router.get('/target/', function (req, res) {
+
+    target.get(req.db, function (result) {
+
+        res.jsonp(result);
+    });
+});
+
+
+
+// Delete
 router.delete('/target/:id', function (req, res) {
 
-    var db = req.db,
-        collection = db.get(COLLECTION),
-        entity;
+    target.remove(req.db, req.params.id, function (result) {
 
-        //console.log(req.params.id);
-	//{_id: employee_collection.db.bson_serializer.ObjectID.createFromHexString(employeeId)}
-
-	try {
-    collection.remove({
-    	_id: new ObjectID.createFromHexString(req.params.id)
-    }, function (err, docs) {
-
-        if (err) {
-            res.jsonp({
-                code: ERROR,
-                message: err
-            });
-        } else {
-            res.jsonp({
-                code: SUCCESS,
-                message: 'ok'
-            });
-        }
-    });  
-    } catch (err) {
-    	console.log(err);
-    }      
-
-        //console.log(JSON.stringify(req));
-
+        res.jsonp(result);
+    });
 
 });
 

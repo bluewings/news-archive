@@ -8,6 +8,39 @@ html {
     overflow-y: scroll;
 }
 
+.rows {
+    padding: 0;
+    .col {
+        padding: 10px;
+    }
+}
+
+.admin-content {
+    margin-top: 45px;
+    font-family: $default-font;
+    .list-group-item {
+        font-size:12px;
+    }
+    .well {
+        padding: 20px;
+        .input-group, textarea {
+            margin-bottom: 10px;
+            .input-group-addon {
+                background-color: #fff;
+                text-align: left;
+                em {
+                    display: block;
+                    width: 80px;
+                    font-style: normal;
+                }
+            }
+            input[type='text'], select {
+                border-left: none;
+            }
+        }
+    }
+}
+
 .navbar {
     font-family: $default-font;
     min-height: 0;
