@@ -4,7 +4,8 @@ function MainCtrl($scope, $http) {
 
     $scope.data = {
         target: null,
-        targetList: []
+        targetList: [],
+        devices: []
     };
 
     $scope.func = {
@@ -26,7 +27,7 @@ function MainCtrl($scope, $http) {
         },
         add: function () {
 
-            $http.post('/api/target', $scope.data.target).success(function (data) {
+            $http.post('/api/target/', $scope.data.target).success(function (data) {
 
                 if (data.code == SUCCESS) {
                     $scope.func.clear();
@@ -71,8 +72,16 @@ function MainCtrl($scope, $http) {
                 }
             });
         }
-
     };
+
+    $http.jsonp('/api/misc/phones/?callback=JSON_CALLBACK').success(function (data) {
+
+        if (data.code == SUCCESS) {
+            $scope.data.devices = data.result.phones;
+        } else {
+            alert(data.message);
+        }
+    });
 
     $scope.func.refresh();
 }
